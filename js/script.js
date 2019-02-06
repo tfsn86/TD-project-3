@@ -21,7 +21,6 @@ When a t-shirt design is selected it controls the t-shirt color options. */
 
 $('#design').on('change', function() { 
     if ($(this).val() === 'js puns') {
-        $('#colors-js-puns').show();
         $('#color option[value="cornflowerblue"]').show().attr('selected', '');
         $('#color option[value="darkslategrey"]').show();
         $('#color option[value="gold"]').show();
@@ -30,7 +29,6 @@ $('#design').on('change', function() {
         $('#color option[value="dimgrey"]').hide();
 
     } else if ($(this).val() === 'heart js') {
-        $('#colors-js-puns').show();
         $('#color option[value="cornflowerblue"]').hide().removeAttr('selected');
         $('#color option[value="darkslategrey"]').hide();
         $('#color option[value="gold"]').hide();
@@ -121,4 +119,35 @@ $('.activities').on('change', function(){
         $runningTotal -= $activityPrice;
     }
     $costDiv.html('<div><span>Total Cost: $'+ $runningTotal + '</span></div>');
+});
+
+// ------------------------- "Payment Info" section ---------------------------------------
+
+// Add functionality that display the correct payments information. The default payment method is set to credit card.
+// The event handler hides/shows the appropriate payment information. 
+$('#credit-card').next().addClass('paypal');
+$('.paypal').hide();
+
+$('#credit-card').next().next().addClass('bitcoin');
+$('.bitcoin').hide();
+
+$('#payment').on('change', function() { 
+        if ($(this).val() === 'credit card') {
+        $('#credit-card').show();
+        $('.paypal').hide();
+        $('.bitcoin').hide();
+        $('#payment option[value="select_method"]').hide();
+
+    }   else if ($(this).val() === 'paypal') {
+        $('#credit-card').hide();
+        $('.paypal').show();
+        $('.bitcoin').hide();
+        $('#payment option[value="select_method"]').hide();
+
+    }   else if ($(this).val() === 'bitcoin') {
+        $('#credit-card').hide();
+        $('.paypal').hide();
+        $('.bitcoin').show();
+        $('#payment option[value="select_method"]').hide();
+    }   
 });
