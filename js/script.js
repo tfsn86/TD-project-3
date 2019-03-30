@@ -1,14 +1,13 @@
 // On page load
 $(document).ready(function() {
 
-    /* Set focus on the first the first text field on page load. 
-    When the page first loads, the first text field should be in focus by default. */
+    // Sets focus on the first the first text field on page load. 
     $('#name').focus();
 
-    //Hide the other job role input field
+    //Hides the other job role input field.
     $('#other-title').hide();
 
-    //Show the other job role text field if "other" is selected in the dropdown. 
+    //Shows the other job role text field if "other" is selected in the job role dropdown. 
     $('#title').on('change', function () {
         if( $(this).val() === 'other' ) {
             $('#other-title').show();
@@ -17,12 +16,12 @@ $(document).ready(function() {
         }
     });
 
-    // Turn off browser auto-validate
+    // Turns off browser auto-validate. Makes it possible to customize form validation messages.
     $("form").attr("novalidate", "novalidate");
 
-    /* -------------------------------------- T-shirt info section. --------------------------------------------
-    When a t-shirt design is selected it controls the t-shirt color options. */
-
+    // -------------------------------------- T-shirt info section --------------------------------------------
+    
+    // The event handler controls the t-shirt selection options depending on the selected t-shirt design. 
     $('#design').on('change', function() { 
         if ($(this).val() === 'js puns') {
             $('#color option[value="cornflowerblue"]').show().attr('selected', '');
@@ -52,16 +51,13 @@ $(document).ready(function() {
     When the user checks activities information with the total costs should display beneath the checkboxes.
     */
 
-
+    // Jeg kan evt. lave en disable-function for at undgå gentagelser.
 
     // checkbox input variables
-    const $mainConfCheckBox = $('input[name="all"]');
     const $jsFramworksCheckBox = $('input[name="js-frameworks"]');
     const $jsLibrarysCheckBox = $('input[name="js-libs"]');
     const $expressCheckBox = $('input[name="express"]');
     const $nodeCheckBox = $('input[name="node"]');
-    const $buildToolsCheckBox = $('input[name="build-tools"]');
-    const $npmCheckBox = $('input[name="npm"]');
 
     $jsFramworksCheckBox.on('change', function () {
         if ($(this).prop('checked')) {
@@ -162,45 +158,118 @@ $(document).ready(function() {
 
         isValidName();
         isValidEmail();
+        isValidActivities();
+        isValidCreditCard();
+        isValidZip();
+        isValidCVV();
 
-        if (isValidName() === false ||
-            isValidEmail() === false) {
-                e.preventDefault();
+        if (
+            isValidName() === false ||
+            isValidEmail() === false ||
+            isValidActivities() === false ||
+            isValidCreditCard() === false ||
+            isValidZip() === false ||
+            isValidCVV() === false) {
+                event.preventDefault();
             }
         
     });
 
+    // Name validation.
     function isValidName () {
         let validateName = /[a-z]+/i.test($('#name').val());
-        if (validateName === false) {
-            $('#name')
-            .css({"margin-bottom": "3px", "border-color": "red"})
-            .after('<div id="user_name_error">Please enter a name</div>')
-            .next()
-            .css({"color": "red", "margin-bottom": "20px"});
-            $('#name').focus();
-        
-        } else if (validateName === true) {
-            $('#user_name_error').remove();
-            $('#name').css({"margin-bottom": "18px", "border-color": "#c1deeb"})
+        if (validateName === true) {
+            $('#name').prev()
+            .css("color", "black")
+            .text("Name:");
+            return true;
+        } else {
+            $('#name').prev()
+            .css("color", "red")
+            .text("Name: Please enter your name");
+            return false;
         }
-        return validateName;
     }
 
+    // Email validation.
     function isValidEmail () {
         let validateEmail = /^[^@]+@[^@.]+\.[a-z]+$/i.test($('#mail').val());
-        if (validateEmail === false) {
-            $('#mail')
-            .css({"margin-bottom": "3px", "border-color": "red"})
-            .after('<div id="user_email_error">Please enter a valid email address</div>')
-            .next()
-            .css({"color": "red", "margin-bottom": "20px"});
-            
-        } else if (validateEmail === true) {
-            $('#user_email_error').remove();
-            $('#mail').css({"margin-bottom": "18px", "border-color": "#c1deeb"})
+        if (validateEmail === true) {
+            $('#mail').prev()
+            .css("color", "black")
+            .text("Email:");;
+            return true;
+        } else {
+            $('#mail').prev()
+            .css("color", "red")
+            .text("Email: Please enter valid email");
+            return false;
         }
-        return validateEmail;
     }
 
+    // Activites validation - at least one activity must be selected.
+    function isValidActivities() {
+        if ($("form input:checkbox:checked").length > 0) {
+            $('.activities legend').css("color", "black");
+            $('.activities legend').text("Register for Activities");
+            return true;
+        } else {
+            $('.activities legend').css("color", "red");
+            $('.activities legend').text("Register for Activities - Please select at least one activity");
+            return false;
+        }
+    }
+
+    // Credit card validation. - must be between 3-16 digits.
+    function isValidCreditCard() {
+        if ($('#payment option:selected').val() === "credit card") {
+            let validateCreditcard = /^\d{13,16}$/.test($('#cc-num').val());
+            if (validateCreditcard === false) {
+                $('#cc-num').prev().css("color", "red");
+                if ($('#cc-num').val() === "") {
+                    $('#cc-num').prev().text("Please enter your credit card number").show();
+                } else {
+                    $('#cc-num').prev().text("Enter a number between 13-16 digits").show();
+                }
+                return false;
+            } else {
+                $('#cc-num').prev().text("Card Number:");
+                $('#cc-num').prev().css("color", "black");
+                return true;
+            }
+        }
+        
+    }
+
+    // Zip validation - must be 5 digits.
+    function isValidZip() {
+        if ($('#payment option:selected').val() === "credit card") {
+            let validate = /^\d{5}$/.test($('#zip').val());
+            if (validate === false) {
+                $('#zip').prev().css("color", "red");
+                $('#zip').prev().text("Zip Code: 5 digits").show();
+                return false;
+            } else {
+                $('#zip').prev().text("Zip Code:");
+                $('#zip').prev().css("color", "black");
+                return true;
+            }
+        }
+    }
+
+    // CVV validation - must be 3 digits.
+    function isValidCVV() {
+        if ($('#payment option:selected').val() === "credit card") {
+            let validate = /^\d{3}$/.test($('#cvv').val());
+            if (validate === false) {
+                $('#cvv').prev().css("color", "red");
+                $('#cvv').prev().text("CVV: 3 digits").show();
+                return false;
+            } else {
+                $('#cvv').prev().text("CVV:");
+                $('#cvv').prev().css("color", "black");
+                return true;
+            }
+        }
+    }
 });
