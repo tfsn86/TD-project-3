@@ -55,8 +55,7 @@ $(document).ready(function() {
 
 
     /* ---------------------------------- ”Register for Activities” section -----------------------------------------
-    Events at the same day and time should not be able to be checked at the same time.
-    When the user checks activities information with the total costs should display beneath the checkboxes.
+    Events at the same day and time can not be selected/checked at the same time.
     */
 
     // checkbox input variables
@@ -105,11 +104,8 @@ $(document).ready(function() {
         }
     });
 
-
-    /* A running total should display below the list of checkboxes. 
-    A div for the total costs are created and appended to the register for activities section.
+    /* A running total is displayed below the list of checkboxes. If a checkbox is checked the running total is updated.
     When a checkbox is checked, the value of the label text (price) is stored in variables.
-    If a checkbox is checked the running total is updated. 
     */
 
     let $runningTotal = 0;
@@ -128,9 +124,10 @@ $(document).ready(function() {
     });
 
     // ------------------------- "Payment Info" section ---------------------------------------
-
-    // Add functionality that display the correct payments information. The default payment method is set to credit card.
-    // The event handler hides/shows the appropriate payment information. 
+    /* The credit card option is selected as default payment method. 
+    The event handler hides/shows the appropriate payment information. */
+    
+    $('#payment').val('credit card');
     $('#credit-card').next().addClass('paypal');
     $('.paypal').hide();
 
@@ -227,7 +224,6 @@ $(document).ready(function() {
     }
 
     // Credit card validation. - must be between 3-16 digits.
-    $('#payment').val('credit card');
     function isValidCreditCard() {
         if ($('#payment option:selected').val() === "credit card") {
             let validateCreditcard = /^\d{13,16}$/.test($('#cc-num').val());
