@@ -21,9 +21,14 @@ $(document).ready(function() {
 
     // -------------------------------------- T-shirt info section --------------------------------------------
     
+    $('#color').hide()
+    $('#color').prev().text('Color: Please select a T-shirt theme');
+
     // The event handler controls the t-shirt selection options depending on the selected t-shirt design. 
     $('#design').on('change', function() { 
         if ($(this).val() === 'js puns') {
+            $('#color').show();
+            $('#color').prev().text('Color:');
             $('#color option[value="cornflowerblue"]').show().attr('selected', '');
             $('#color option[value="darkslategrey"]').show();
             $('#color option[value="gold"]').show();
@@ -32,6 +37,8 @@ $(document).ready(function() {
             $('#color option[value="dimgrey"]').hide();
 
         } else if ($(this).val() === 'heart js') {
+            $('#color').show();
+            $('#color').prev().text('Color:');
             $('#color option[value="cornflowerblue"]').hide().removeAttr('selected');
             $('#color option[value="darkslategrey"]').hide();
             $('#color option[value="gold"]').hide();
@@ -40,7 +47,8 @@ $(document).ready(function() {
             $('#color option[value="dimgrey"]').show();
 
         } else {
-            $('#color').children().show();
+            $('#color').hide();
+            $('#color').prev().text('Color: Please select a T-shirt theme');
         };
     });
 
@@ -50,8 +58,6 @@ $(document).ready(function() {
     Events at the same day and time should not be able to be checked at the same time.
     When the user checks activities information with the total costs should display beneath the checkboxes.
     */
-
-    // Jeg kan evt. lave en disable-function for at undgå gentagelser.
 
     // checkbox input variables
     const $jsFramworksCheckBox = $('input[name="js-frameworks"]');
@@ -197,7 +203,7 @@ $(document).ready(function() {
         if (validateEmail === true) {
             $('#mail').prev()
             .css("color", "black")
-            .text("Email:");;
+            .text("Email:");
             return true;
         } else {
             $('#mail').prev()
@@ -221,6 +227,7 @@ $(document).ready(function() {
     }
 
     // Credit card validation. - must be between 3-16 digits.
+    $('#payment').val('credit card');
     function isValidCreditCard() {
         if ($('#payment option:selected').val() === "credit card") {
             let validateCreditcard = /^\d{13,16}$/.test($('#cc-num').val());
