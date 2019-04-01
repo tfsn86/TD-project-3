@@ -134,6 +134,8 @@ $(document).ready(function() {
     $('#credit-card').next().next().addClass('bitcoin');
     $('.bitcoin').hide();
 
+    $('#payment option[value="select_method"]').hide();
+
     $('#payment').on('change', function() { 
             if ($(this).val() === 'credit card') {
             $('#credit-card').show();
